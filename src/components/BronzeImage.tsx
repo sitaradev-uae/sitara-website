@@ -2,17 +2,12 @@
 import type { StaticImageData } from "next/image";
 
 type BronzeImageProps = {
-  // We now expect callers to pass an already-prefixed string path.
-  // (StaticImageData still supported but not prefixed here.)
-  src: string | StaticImageData;
+  src: string | StaticImageData; // pass "/images/..." from callers
   alt: string;
   width: number;
   height: number;
-  /** 0 → none, 1 → very strong (default 0.22) */
-  overlayStrength?: number;
-  /** Add a soft vignette for contrast (default true) */
-  vignette?: boolean;
-  /** quick presets: "light" | "dark" (affects strength + vignette) */
+  overlayStrength?: number; // 0 → 1 (default 0.22)
+  vignette?: boolean;       // default true
   variant?: "light" | "dark";
   className?: string;
   priority?: boolean; // kept for API parity
@@ -21,6 +16,16 @@ type BronzeImageProps = {
 
 // Sitara bronze
 const BRONZE = "198,162,91";
+
+// Hard, reliable prefix at build time (no env reliance):
+const isProd = process.env.NODE_ENV === "production";
+// <-- IMPORTANT: keep the repo name here
+const REPO_PREFIX = isProd ? "/sitara-website" : "";
+
+function withRepoPrefix(p: string) {
+  const path = p.startsWith("/") ? p : `/${p}`;
+  return `${REPO_PREFIX}${path}`;
+}
 
 export default function BronzeImage({
   src,
@@ -32,12 +37,11 @@ export default function BronzeImage({
   variant = "light",
   className,
 }: BronzeImageProps) {
-  // sensible defaults by preset
-  const strength =
-    overlayStrength ?? (variant === "dark" ? 0.34 : 0.22); // bump for darker photos
+  const strength = overlayStrength ?? (variant === "dark" ? 0.34 : 0.22);
 
-  // Do NOT prefix here — callers pass a fully resolved string.
-  const finalSrc = typeof src === "string" ? src : src.src;
+  // If an imported image (StaticImageData), use its .src; otherwise use the string.
+  const rawSrc = typeof src === "string" ? src : src.src;
+  const finalSrc = withRepoPrefix(rawSrc);
 
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-soft">
@@ -51,7 +55,7 @@ export default function BronzeImage({
         decoding="async"
       />
 
-      {/* Bronze color wash (soft-light gives a tasteful metal glow) */}
+      {/* Bronze color wash */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -60,7 +64,7 @@ export default function BronzeImage({
         }}
       />
 
-      {/* Directional bronze gradient (adds depth and warmth) */}
+      {/* Directional bronze gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -71,7 +75,7 @@ export default function BronzeImage({
         }}
       />
 
-      {/* Optional vignette for contrast/readability */}
+      {/* Optional vignette */}
       {vignette && (
         <div
           className="absolute inset-0 pointer-events-none"
