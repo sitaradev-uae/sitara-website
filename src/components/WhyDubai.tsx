@@ -1,5 +1,6 @@
 "use client";
 import BronzeImage from "./BronzeImage";
+import { withBasePath } from "@/lib/prefix";
 
 export default function WhyDubai() {
   return (
@@ -8,12 +9,12 @@ export default function WhyDubai() {
       className="relative mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-2 gap-10 items-center"
     >
       <BronzeImage
-        src="/images/gold-trading.jpeg"
+        src={withBasePath("/images/gold-trading.jpeg")}
         alt="Gold trading and Dubai skyline"
         width={1600}
         height={1000}
-        variant="light"          // a touch lighter here
-        overlayStrength={0.26}
+        variant="dark"           // slightly stronger preset
+        overlayStrength={0.38}   // fine-tune if you want
       />
 
       <div>
