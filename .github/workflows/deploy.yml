@@ -5,16 +5,22 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# Minimal, correct permissions for Pages deploy
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
+
+# Prevent overlapping deploys
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -26,8 +32,9 @@ jobs:
       - name: Install deps
         run: npm ci || npm i
 
-      - name: Build & Export
+      - name: Build (Next 15 static export)
         run: npm run static:build
+        # next.config.ts has `output: "export"`, so `next build` writes to `out/`
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -40,6 +47,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
