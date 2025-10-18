@@ -1,26 +1,45 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---- Sitara theme tokens (Tailwind v4) ---- */
+@theme {
+  /* Colors */
+  --color-background: #0C0C0C;  /* matte black */
+  --color-foreground: #F3F3F3;  /* off-white */
+  --color-bronze: #C6A25B;      /* champagne gold */
+  --color-bronze-dim: #a88a4b;  /* muted bronze */
+
+  /* Optional fonts (hook these up later if you add @next/font): */
+  /* --font-sans: var(--font-geist-sans); */
+  /* --font-mono: var(--font-geist-mono); */
+
+  /* Shadows */
+  --shadow-soft: 0 6px 30px rgba(0,0,0,0.25);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Utility for the soft shadow used on cards/media */
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+/* Light/Dark surface variables (optional). 
+   Keep these if you want OS-level theme switching. */
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
   }
 }
 
+/* Global element styles */
+html, body { height: 100%; }
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  @apply bg-background text-foreground antialiased;
+  /* font-family: var(--font-sans, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"); */
 }
