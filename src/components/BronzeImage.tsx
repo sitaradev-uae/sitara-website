@@ -35,21 +35,18 @@ export default function BronzeImage({
 }: BronzeImageProps) {
   // sensible defaults by preset
   const strength =
-    overlayStrength ??
-    (variant === "dark" ? 0.34 : 0.22); // bump for darker photos
+    overlayStrength ?? (variant === "dark" ? 0.34 : 0.22); // bump for darker photos
 
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-soft">
       <Image
-        src={src}
+        src={src} // 👈 pass the raw path; next/image adds basePath itself
         alt={alt}
         width={width}
         height={height}
         priority={priority}
         sizes={sizes}
         className={`w-full h-auto object-cover ${className ?? ""}`}
-        // Note: next/image respects basePath automatically and we're using
-        // images.unoptimized=true in next.config.ts for GitHub Pages.
       />
 
       {/* Bronze color wash (soft-light gives a tasteful metal glow) */}
