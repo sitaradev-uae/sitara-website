@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
 import type { StaticImageData } from "next/image";
+import { withBasePath } from "@/lib/prefix";
 
 type BronzeImageProps = {
   src: string | StaticImageData;
@@ -14,8 +14,8 @@ type BronzeImageProps = {
   /** quick presets: "light" | "dark" (affects strength + vignette) */
   variant?: "light" | "dark";
   className?: string;
-  priority?: boolean;
-  sizes?: string;
+  priority?: boolean; // kept for API parity (not used by <img>)
+  sizes?: string;     // kept for API parity (not used by <img>)
 };
 
 // Sitara bronze
@@ -30,23 +30,25 @@ export default function BronzeImage({
   vignette = true,
   variant = "light",
   className,
-  priority,
-  sizes,
 }: BronzeImageProps) {
   // sensible defaults by preset
   const strength =
     overlayStrength ?? (variant === "dark" ? 0.34 : 0.22); // bump for darker photos
 
+  // Support both string paths and imported StaticImageData
+  const resolvedSrc =
+    typeof src === "string" ? withBasePath(src) : withBasePath(src.src);
+
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-soft">
-      <Image
-        src={src} // 👈 pass the raw path; next/image adds basePath itself
+      <img
+        src={resolvedSrc}
         alt={alt}
         width={width}
         height={height}
-        priority={priority}
-        sizes={sizes}
         className={`w-full h-auto object-cover ${className ?? ""}`}
+        loading="lazy"
+        decoding="async"
       />
 
       {/* Bronze color wash (soft-light gives a tasteful metal glow) */}

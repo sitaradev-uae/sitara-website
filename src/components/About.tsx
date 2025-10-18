@@ -1,6 +1,5 @@
 "use client";
 import BronzeImage from "./BronzeImage";
-import { withBasePath } from "@/lib/prefix";
 
 export default function About() {
   return (
@@ -9,7 +8,7 @@ export default function About() {
       className="relative mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-10 items-center"
     >
       <BronzeImage
-        src={withBasePath("/images/dubai-skyline.jpeg")}
+        src="/images/dubai-skyline.jpeg"
         alt="Dubai skyline at dusk"
         width={1600}
         height={1000}
