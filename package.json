@@ -5,9 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "export": "next export",
     "postexport": "node scripts/postExport.cjs",
-    "static:build": "npm run build && npm run export && npm run postexport",
+    "static:build": "npm run build && npm run postexport",
     "start": "next start",
     "lint": "eslint"
   },
