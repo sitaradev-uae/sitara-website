@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
   // 👇 Allow CI builds to succeed even if lint/type errors exist
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+
+  // ✅ Add this block here
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repo}` : "",
+  },
 };
 
 export default nextConfig;

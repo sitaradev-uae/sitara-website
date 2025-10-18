@@ -43,3 +43,11 @@ body {
   @apply bg-background text-foreground antialiased;
   /* font-family: var(--font-sans, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"); */
 }
+
+:root { --safe-bottom: env(safe-area-inset-bottom, 0); }
+
+/* Give the bottom sections some extra room on iOS */
+#contact, footer {
+  padding-bottom: calc(1.25rem + var(--safe-bottom));
+}
+
