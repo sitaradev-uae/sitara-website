@@ -1,8 +1,9 @@
 "use client";
 import type { StaticImageData } from "next/image";
-import { withBasePath } from "@/lib/prefix";
 
 type BronzeImageProps = {
+  // We now expect callers to pass an already-prefixed string path.
+  // (StaticImageData still supported but not prefixed here.)
   src: string | StaticImageData;
   alt: string;
   width: number;
@@ -14,8 +15,8 @@ type BronzeImageProps = {
   /** quick presets: "light" | "dark" (affects strength + vignette) */
   variant?: "light" | "dark";
   className?: string;
-  priority?: boolean; // kept for API parity (not used by <img>)
-  sizes?: string;     // kept for API parity (not used by <img>)
+  priority?: boolean; // kept for API parity
+  sizes?: string;     // kept for API parity
 };
 
 // Sitara bronze
@@ -35,14 +36,13 @@ export default function BronzeImage({
   const strength =
     overlayStrength ?? (variant === "dark" ? 0.34 : 0.22); // bump for darker photos
 
-  // Support both string paths and imported StaticImageData
-  const resolvedSrc =
-    typeof src === "string" ? withBasePath(src) : withBasePath(src.src);
+  // Do NOT prefix here — callers pass a fully resolved string.
+  const finalSrc = typeof src === "string" ? src : src.src;
 
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-soft">
       <img
-        src={resolvedSrc}
+        src={finalSrc}
         alt={alt}
         width={width}
         height={height}
