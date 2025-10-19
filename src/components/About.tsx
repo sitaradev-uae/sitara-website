@@ -26,8 +26,7 @@ export default function About() {
             About Sitara
           </h2>
           <p className="mt-6 text-base sm:text-lg text-neutral-300 leading-relaxed">
-            We build pragmatic AI and compliance workflows for precious metals,
-            connecting counterparties with robust KYC and secure logistics.
+           Sitara partners across the precious-metals supply chain — from producers and refiners to secure storage and market distribution. Based in Dubai, we focus on dependable counterparties, transparent commercial terms, and disciplined execution. Our role is to help move metal efficiently and responsibly from origin to market, with clarity on risks, documentation and settlement.
           </p>
         </div>
       </div>
