@@ -1,32 +1,31 @@
 import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === "production";
-const repo = "sitara-website";
+const repo = "sitara-website"; // ← your GitHub repo name
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
   // Static export for GitHub Pages
   output: "export",
-  basePath: isProd ? `/${repo}` : undefined,
-  assetPrefix: isProd ? `/${repo}/` : undefined,
+  basePath: isProd ? `/${repo}` : "",
+  assetPrefix: isProd ? `/${repo}/` : "",
   trailingSlash: true,
 
-  // GH Pages can't optimize images dynamically
+  // GH Pages cannot use Next’s image optimizer
   images: {
     unoptimized: true,
     domains: ["images.unsplash.com", "upload.wikimedia.org"],
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "upload.wikimedia.org" }
+      { protocol: "https", hostname: "upload.wikimedia.org" },
     ],
   },
 
-  // 👇 Allow CI builds to succeed even if lint/type errors exist
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
-  // ✅ Add this block here
+  // Make the base path available inside the app
   env: {
     NEXT_PUBLIC_BASE_PATH: isProd ? `/${repo}` : "",
   },
